@@ -1,5 +1,6 @@
 import logo from "./logo.svg";
 import "./App.css";
+import { useState } from "react";
 
 const itemList = [
   { id: 1, quantity: 1, description: "bag", packed: false },
@@ -27,14 +28,47 @@ function Header() {
   );
 }
 function Form() {
+  const [description, setDescription] = useState("");
+  const [quantity, setQuantity] = useState(1);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    if (description === "") return;
+
+    const newItem = {
+      id: Date.now(),
+      quantity: quantity,
+      description: description,
+      packed: false,
+    };
+
+    console.log(newItem);
+
+    setDescription("");
+    setQuantity(1);
+  }
+
   return (
     <div>
-      <form>
+      <form onSubmit={handleSubmit}>
         <h3>What you need for your trip 🏞</h3>
-        <select>
-          <option>1</option>
+        <select
+          value={quantity}
+          onChange={(e) => setQuantity(Number(e.target.value))}
+        >
+          {Array.from({ length: 20 }, (v, i) => i + 1).map((sum) => (
+            <option key={sum} value={sum}>
+              {sum}
+            </option>
+          ))}
         </select>
-        <input></input>
+        <input
+          type="text"
+          placeholder="Text..."
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
         <button>ADD</button>
       </form>
     </div>
@@ -44,11 +78,25 @@ function Form() {
 function ParkingList() {
   return (
     <div>
-      <ul></ul>
+      <ul>
+        {itemList.map((item) => (
+          <Item item={item} key={item.id} />
+        ))}
+      </ul>
     </div>
   );
 }
+
+function Item({ item }) {
+  return (
+    <li>
+      <span>
+        {item.quantity} {item.description} <button>❌</button>
+      </span>
+    </li>
+  );
+}
+
 function Stats() {}
-function Item() {}
 
 export default App;
