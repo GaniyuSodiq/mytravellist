@@ -1,26 +1,22 @@
 import { useState } from "react";
 import "./index.css";
 
-const itemList = [
-  { id: 1, quantity: 1, description: "bag", packed: false },
-  { id: 2, quantity: 3, description: "bottles of water", packed: true },
-  { id: 3, quantity: 4, description: "Loaf of bread", packed: false },
-  { id: 4, quantity: 2, description: "phones", packed: true },
-];
-
 function App() {
   const [items, setItems] = useState([]);
-  
 
   function handleAddItems(newItem) {
     setItems([...items, newItem]);
+  }
+
+  function handleDeleteItem(id) {
+    setItems(items.filter((item) => item.id !== id));
   }
 
   return (
     <div className="app">
       <Header />
       <Form onAddItems={handleAddItems} />
-      <ParkingList item={items} />
+      <ParkingList item={items} onDeleteItem={handleDeleteItem} />
       <Stats />
     </div>
   );
@@ -81,23 +77,24 @@ function Form({ onAddItems }) {
   );
 }
 
-function ParkingList({ item }) {
+function ParkingList({ item, onDeleteItem }) {
   return (
     <div className="list">
       <ul>
         {item.map((item) => (
-          <Item item={item} key={item.id} />
+          <Item item={item} key={item.id} onDeleteItem={onDeleteItem} />
         ))}
       </ul>
     </div>
   );
 }
 
-function Item({ item }) {
+function Item({ item, onDeleteItem }) {
   return (
     <li>
       <span>
-        {item.quantity} {item.description} <button onClick={}>❌</button>
+        {item.quantity} {item.description}{" "}
+        <button onClick={() => onDeleteItem(item.id)}>❌</button>
       </span>
     </li>
   );
