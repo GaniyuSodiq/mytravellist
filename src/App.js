@@ -1,6 +1,5 @@
-import logo from "./logo.svg";
-import "./App.css";
 import { useState } from "react";
+import "./index.css";
 
 const itemList = [
   { id: 1, quantity: 1, description: "bag", packed: false },
@@ -11,7 +10,7 @@ const itemList = [
 
 function App() {
   return (
-    <div className="App">
+    <div className="app">
       <Header />
       <Form />
       <ParkingList />
@@ -51,7 +50,7 @@ function Form() {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form className="add-form" onSubmit={handleSubmit}>
         <h3>What you need for your trip 🏞</h3>
         <select
           value={quantity}
@@ -77,7 +76,7 @@ function Form() {
 
 function ParkingList() {
   return (
-    <div>
+    <div className="list">
       <ul>
         {itemList.map((item) => (
           <Item item={item} key={item.id} />
@@ -97,6 +96,12 @@ function Item({ item }) {
   );
 }
 
-function Stats() {}
+function Stats() {
+  return (
+    <div className="stats">
+      <h3>💼 You have X items in your list, and you have packed X (X%)</h3>
+    </div>
+  );
+}
 
 export default App;
