@@ -12,11 +12,23 @@ function App() {
     setItems(items.filter((item) => item.id !== id));
   }
 
+  function handleCheckItem(id) {
+    setItems(
+      items.map((item) =>
+        item.id === id ? { ...item, packed: !item.packed } : item
+      )
+    );
+  }
+
   return (
     <div className="app">
       <Header />
       <Form onAddItems={handleAddItems} />
-      <ParkingList item={items} onDeleteItem={handleDeleteItem} />
+      <ParkingList
+        item={items}
+        onDeleteItem={handleDeleteItem}
+        onCheckItem={handleCheckItem}
+      />
       <Stats />
     </div>
   );
@@ -77,25 +89,35 @@ function Form({ onAddItems }) {
   );
 }
 
-function ParkingList({ item, onDeleteItem }) {
+function ParkingList({ item, onDeleteItem, onCheckItem }) {
   return (
     <div className="list">
       <ul>
         {item.map((item) => (
-          <Item item={item} key={item.id} onDeleteItem={onDeleteItem} />
+          <Item
+            item={item}
+            key={item.id}
+            onDeleteItem={onDeleteItem}
+            onCheckItem={onCheckItem}
+          />
         ))}
       </ul>
     </div>
   );
 }
 
-function Item({ item, onDeleteItem }) {
+function Item({ item, onDeleteItem, onCheckItem }) {
   return (
     <li>
-      <span>
+      <input
+        type="checkbox"
+        value={item.packed}
+        onChange={() => onCheckItem(item.id)}
+      />
+      <span style={item.packed ? { textDecoration: "line-through" } : {}}>
         {item.quantity} {item.description}{" "}
-        <button onClick={() => onDeleteItem(item.id)}>❌</button>
       </span>
+      <button onClick={() => onDeleteItem(item.id)}>❌</button>
     </li>
   );
 }
