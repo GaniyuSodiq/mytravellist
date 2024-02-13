@@ -3,17 +3,24 @@ import "./index.css";
 
 const itemList = [
   { id: 1, quantity: 1, description: "bag", packed: false },
-  { id: 2, quantity: 3, description: "bottles os water", packed: true },
+  { id: 2, quantity: 3, description: "bottles of water", packed: true },
   { id: 3, quantity: 4, description: "Loaf of bread", packed: false },
   { id: 4, quantity: 2, description: "phones", packed: true },
 ];
 
 function App() {
+  const [items, setItems] = useState([]);
+  
+
+  function handleAddItems(newItem) {
+    setItems([...items, newItem]);
+  }
+
   return (
     <div className="app">
       <Header />
-      <Form />
-      <ParkingList />
+      <Form onAddItems={handleAddItems} />
+      <ParkingList item={items} />
       <Stats />
     </div>
   );
@@ -26,7 +33,7 @@ function Header() {
     </div>
   );
 }
-function Form() {
+function Form({ onAddItems }) {
   const [description, setDescription] = useState("");
   const [quantity, setQuantity] = useState(1);
 
@@ -42,7 +49,7 @@ function Form() {
       packed: false,
     };
 
-    console.log(newItem);
+    onAddItems(newItem);
 
     setDescription("");
     setQuantity(1);
@@ -74,11 +81,11 @@ function Form() {
   );
 }
 
-function ParkingList() {
+function ParkingList({ item }) {
   return (
     <div className="list">
       <ul>
-        {itemList.map((item) => (
+        {item.map((item) => (
           <Item item={item} key={item.id} />
         ))}
       </ul>
@@ -90,7 +97,7 @@ function Item({ item }) {
   return (
     <li>
       <span>
-        {item.quantity} {item.description} <button>❌</button>
+        {item.quantity} {item.description} <button onClick={}>❌</button>
       </span>
     </li>
   );
